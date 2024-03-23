@@ -1,0 +1,94 @@
+{{>layouts/header}}
+<!--내용-->
+<h1>여기는 관리자 페이지 입니다.</h1>
+<div>
+    <h3>선물 추가 하기</h3>
+    <form class="container" action="/gift/AddGift" method="post">
+        선물 명:     <input type="text" name="g_name"><br>
+        선물 주인:   <select name="g_giftOwner">
+                    {{#MemberDTOs}}
+                        <option>{{m_id}}</option>
+                    {{/MemberDTOs}}
+                    </select><br>
+
+        설명:     <input type="text" name="g_about"><br>
+        <button type="submit"> 선물 추가 </button>
+        <input type="reset"	value="reset">
+    </form>
+</div>
+<br>
+<br>
+<div>
+    선물 목록
+    <table>
+        <tr>
+            <th scope="col">no</th>
+            <th scope="col">선물 명</th>
+            <th scope="col">선물 주인</th>
+            <th scope="col">등록일</th>
+            <th scope="col">최종 수정일</th>
+            <th scope="col">설명</th>
+            <th scope="col"></th>
+        </tr>
+        <tbody>
+        {{#GiftDTOs}}
+
+            <tr align="center" style="cursor:pointer;">
+                <td>{{g_no}}</td>
+                <td>{{g_name}}</td>
+                <td>{{g_giftOwner}}</td>
+                <td>{{g_reg_date}}</td>
+                <td>{{g_mod_date}}</td>
+                <td>{{g_about}}</td>
+                <td> <button type="button" onClick="location.href='/gift/giftDelete?g_no={{g_no}}'">삭제</button> </td>
+            </tr>
+        {{/GiftDTOs}}
+        </tbody>
+    </table>
+
+</div>
+
+<br><br><br>
+
+<h3>멤버 정보 변경</h3>
+<table>
+    <tr>
+        <th scope="col">no</th>
+        <th scope="col">관리자 여부</th>
+        <th scope="col">ID</th>
+        <th scope="col">PW</th>
+        <th scope="col">이름</th>
+        <th scope="col">성별</th>
+        <th scope="col">메일</th>
+        <th scope="col">전화번호</th>
+        <th scope="col">등록일</th>
+        <th scope="col">최종 수정일</th>
+        <th scope="col">코인</th>
+        <th scope="col">수정</th>
+    </tr>
+    <tbody>
+    {{#MemberDTOs}}
+        <tr align="center" style="cursor:pointer;">
+            <form class="container" action="/manager/editMember" method="post">
+                <td>{{m_no}}<input type="hidden"  name="m_no"     value={{m_no}}></td>
+                <td><input type="text"  name="m_isAdmin"     value={{m_isAdmin}}></td>
+                <td><input type="text"  name="m_id" 	     value={{m_id}}></td>
+                <td><input type="text"  name="m_pw" 	     value={{m_pw}}></td>
+                <td><input type="text"  name="m_name"     value={{m_name}}></td>
+                <td><input type="text"  name="m_gender"     value={{m_gender}}></td>
+                <td><input type="text"  name="m_mail" 	     value={{m_mail}}></td>
+                <td><input type="text"  name="m_phone" 	     value={{m_phone}}></td>
+                <td>{{m_reg_date}}></td>
+                <td>{{m_mod_date}}></td>
+                <td><input type="text"  name="m_coin" 	     value={{m_coin}}></td>
+
+                <td><button type="submit"> 수정 확인 </button></td>
+        </form>
+        </tr>
+    {{/MemberDTOs}}
+    </tbody>
+</table>
+
+
+
+{{>layouts/footer}}

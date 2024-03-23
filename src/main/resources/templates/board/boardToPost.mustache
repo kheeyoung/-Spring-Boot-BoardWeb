@@ -1,0 +1,25 @@
+{{>layouts/header}}
+<!--내용-->
+<!-- 리스트 게시판 시작-->
+<script>
+
+</script>
+<h1>글 쓰기</h1>
+<form class="container" action="/board/toPost_Confirm" method="post">
+    제목:     <input type="text" name="b_name"><br>
+    받는 사람: <select name="b_receiver">
+                {{#MemberDTOs}}
+                    <option>{{m_id}}</option>
+                {{/MemberDTOs}}
+            </select><br>
+    보낼 선물: <select name="b_gift">
+                {{#GiftDTOs}}
+                     <option>{{g_name}}</option>
+                {{/GiftDTOs}}
+            </select><br>
+    내용:     <input type="text" name="b_context"><br>
+    <button type="submit"> 글 쓰기 </button>
+    <input type="reset"	value="reset">
+</form>
+
+{{>layouts/footer}}

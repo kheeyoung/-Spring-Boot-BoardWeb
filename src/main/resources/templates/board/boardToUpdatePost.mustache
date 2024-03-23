@@ -1,0 +1,15 @@
+{{>layouts/header}}
+<!--내용-->
+<!-- 리스트 게시판 시작-->
+<h1>글 쓰기</h1>
+<form class="container" action="/board/boardToUpdatePost_Confirm" method="post">
+    제목:     <input type="text" name="b_name" value="{{b_name}}"><br>
+    받는 사람: {{b_receiver}} <br>
+    보낼 선물: {{b_gift}} <br>
+    내용:     <input type="text" name="b_context" value="{{b_context}}"><br>
+    <input type="hidden" name="b_no" value={{b_no}}>
+    <button type="submit"> 글 수정 </button>
+    <input type="reset"	value="reset">
+</form>
+
+{{>layouts/footer}}

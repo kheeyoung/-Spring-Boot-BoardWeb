@@ -1,0 +1,9 @@
+{{>layouts/header}}
+<!--내용-->
+<form class="container" action="/login/loginConfirm" method="post">
+    ID: <input type="text" name="m_id" 	placeholder="INPUT USER ID."><br>
+    PW: <input type="password" name="m_pw" 	placeholder="INPUT USER PW."><br>
+    <button type="submit"> 로그인 </button>
+    <input type="reset"	value="reset">
+</form>
+{{>layouts/footer}}

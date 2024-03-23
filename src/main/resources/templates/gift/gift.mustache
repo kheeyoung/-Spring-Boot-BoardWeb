@@ -1,0 +1,35 @@
+{{>layouts/header}}
+<h1>선물 목록</h1>
+{{#GiftDTOs}}
+    {{g_name}}<br>
+{{/GiftDTOs}}
+
+<br><br><br>
+
+<h1>선물 뽑기</h1>
+<h2> 1회=1코인</h2>
+<h3>보유 코인 : {{Coin}}</h3>
+<form class="container" action="/gift/giftToGet" method="post">
+    <button type="submit"> 선물 뽑기 </button>
+</form>
+
+
+<br><br><br>
+<h1>보유 선물 목록</h1>
+<table>
+    <tr>
+        <th scope="col">선물 명</th>
+        <th scope="col">획득일</th>
+
+        <th scope="col"></th>
+    </tr>
+    <tbody>
+    {{#ItemDTOs}}
+        <tr align="center" style="cursor:pointer;">
+            <td>{{i_name}}</td>
+            <td>{{i_reg_date}}</td>
+        </tr>
+    {{/ItemDTOs}}
+    </tbody>
+</table>
+{{>layouts/footer}}
