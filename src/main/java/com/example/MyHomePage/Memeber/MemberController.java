@@ -1,6 +1,7 @@
 package com.example.MyHomePage.Memeber;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@Slf4j
 public class MemberController {
     @Autowired
     MemberService MemberService;
@@ -32,7 +34,7 @@ public class MemberController {
     //로그인
     @PostMapping("/login/loginConfirm")
     public String loginConfirm(MemberDTO memberDTO, HttpSession session, Model model){
-        System.out.println("[memberController] loginConfirm");
+        log.info("[memberController] loginConfirm");
         model.addAttribute("result","성공");
         model.addAttribute("reason","로그인 성공");
 
@@ -57,7 +59,7 @@ public class MemberController {
     public String login_signIn_Confirm(MemberDTO memberDTO, @RequestParam(value="m_mail1") String m_mail1,
                                                             @RequestParam(value="m_mail2") String m_mail2,
                                                             @RequestParam(value="m_mail3") String m_mail3, Model model){
-        System.out.println("[memberController] login_signIn");
+        log.info("[memberController] login_signIn");
         model.addAttribute("result","성공");
         model.addAttribute("reason","회원가입 성공");
         String nextPage="/result";
@@ -80,7 +82,7 @@ public class MemberController {
     //맴버 수정용 (관리자)
     @PostMapping("/manager/editMember")
     public String editMember(MemberDTO memberDTO){
-        System.out.println("[memberController] editMember");
+        log.info("[memberController] editMember");
         String nextPage="redirect:/manager";
 
         MemberService.editMember(memberDTO); //맴버 정보 수정된 거 업데이트

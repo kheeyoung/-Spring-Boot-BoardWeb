@@ -13,9 +13,9 @@
                 {{/MemberDTOs}}
             </select><br>
     보낼 선물: <select name="b_gift">
-                {{#GiftDTOs}}
-                     <option>{{g_name}}</option>
-                {{/GiftDTOs}}
+                {{#ItemDTOs}}
+                     <option>{{i_name}}</option>
+                {{/ItemDTOs}}
             </select><br>
     내용:     <input type="text" name="b_context"><br>
     <button type="submit"> 글 쓰기 </button>

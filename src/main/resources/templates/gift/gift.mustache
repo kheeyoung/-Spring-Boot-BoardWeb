@@ -24,12 +24,36 @@
         <th scope="col"></th>
     </tr>
     <tbody>
-    {{#ItemDTOs}}
+    {{#MyItems}}
         <tr align="center" style="cursor:pointer;">
             <td>{{i_name}}</td>
             <td>{{i_reg_date}}</td>
         </tr>
-    {{/ItemDTOs}}
+    {{/MyItems}}
     </tbody>
 </table>
+
+<br><br><br>
+<h1>호감도 목록</h1>
+
+<table>
+
+    <tr>
+        <th scope="col">이름</th>
+        <th scope="col">호감도</th>
+
+        <th scope="col"></th>
+    </tr>
+    <tbody>
+    {{#LikePointDTOs}}
+        <tr align="center" style="cursor:pointer;">
+
+            <td>{{name}}</td>
+            <td>{{point}}</td>
+
+        </tr>
+        {{/LikePointDTOs}}
+    </tbody>
+</table>
+
 {{>layouts/footer}}

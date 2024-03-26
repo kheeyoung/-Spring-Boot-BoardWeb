@@ -1,11 +1,13 @@
 package com.example.MyHomePage.board;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 public class BoardService {
     @Autowired BoardDao boardDao;
 
@@ -14,7 +16,7 @@ public class BoardService {
     final static public int FAIL=-1;
 
     public List<BoardDTO> getPost(int fristPost, int lastPost) {
-        System.out.println("[BoardService] getPost");
+        log.info("[BoardService] getPost");
         List<BoardDTO> boardDTOS =boardDao.selectPost();
         List<BoardDTO> subBoardDTOS;
         if(boardDTOS.size()>lastPost){
@@ -29,7 +31,7 @@ public class BoardService {
     }
 
     public int PostConfirm(BoardDTO boardDTO, String username) {
-        System.out.println("[BoardService] PostConfirm");
+        log.info("[BoardService] PostConfirm");
         int result = boardDao.PostConfirm(boardDTO, username);
         if (result == 1) { //포스팅 성공시
             return SUCCESS;
@@ -39,12 +41,12 @@ public class BoardService {
     }
 
     public BoardDTO getPostByb_no(int b_No) {
-        System.out.println("[BoardService] getPostByb_no");
+        log.info("[BoardService] getPostByb_no");
         return boardDao.selectPost(b_No);
     }
 
     public int PostUpdateConfirm(BoardDTO boardDTO) {
-        System.out.println("[BoardService] PostUpdateConfirm");
+        log.info("[BoardService] PostUpdateConfirm");
         int result = boardDao.PostUpdateConfirm(boardDTO, boardDTO.getB_no());
         if (result == 1) { //포스팅 수정 성공시
             return SUCCESS;
@@ -54,12 +56,17 @@ public class BoardService {
     }
 
     public int DeletePost(int b_no) {
-        System.out.println("[BoardService] DeletePost");
+        log.info("[BoardService] DeletePost");
         int result = boardDao.DeletePost(b_no);
         if (result == 1) { //포스팅 삭제 성공시
             return SUCCESS;
         } else {
             return FAIL;
         }
+    }
+
+    public void addViewNum(int i, int b_no) {
+        log.info("[BoardService] addViewNum");
+        boardDao.addViewNum(i,b_no);
     }
 }

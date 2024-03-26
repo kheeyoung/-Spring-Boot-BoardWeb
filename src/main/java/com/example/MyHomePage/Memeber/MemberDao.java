@@ -3,6 +3,7 @@ package com.example.MyHomePage.Memeber;
 
 import com.example.MyHomePage.board.BoardDTO;
 import jdk.jfr.Category;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Slf4j
 public class MemberDao {
 
     @Autowired
@@ -20,7 +22,7 @@ public class MemberDao {
 
     //로그인 처리
     public MemberDTO selectMember(MemberDTO memberDTO) {
-        System.out.println("[MemberDao] selectMember");
+        log.info("[MemberDao] selectMember");
 
         String sql="SELECT * FROM kim_tbl_member WHERE m_id="+memberDTO.getM_id();
         List<MemberDTO> memberDTOs =new ArrayList<MemberDTO>();
@@ -30,20 +32,19 @@ public class MemberDao {
             memberDTOs=jdbcTemplate.query(sql,rowMapper);
             if(memberDTOs.isEmpty() || !memberDTO.getM_pw().equals(memberDTOs.get(0).getM_pw())){
                 memberDTOs.clear();
-                System.out.println("clear");
+                log.info("clear");
             }
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println(memberDTOs.size());
 
         return !memberDTOs.isEmpty() ? memberDTOs.get(0):null;
     }
 
     //가입 여부 알아내기
     public boolean isMember(String m_id) {
-        System.out.println("[MemberDao] isMember");
+        log.info("[MemberDao] isMember");
 
         String sql="SELECT COUNT(*) FROM kim_tbl_member WHERE m_id=?";
         int result=0;
@@ -59,7 +60,7 @@ public class MemberDao {
 
     //회원가입하기.
     public int insertMemberAccount(MemberDTO memberDTO) {
-        System.out.println("[MemberDao] isMember");
+        log.info("[MemberDao] isMember");
         String sql="INSERT INTO kim_tbl_member (m_id,m_pw,m_name,m_gender,m_mail,m_phone,m_reg_date,m_mod_date,m_coin) VALUE (?,?,?,?,?,?,NOW(),NOW(),0)";
 
         int result=-1;
@@ -74,7 +75,7 @@ public class MemberDao {
 
     //멤버 전부 가져오기
     public List <MemberDTO> getMember() {
-        System.out.println("[MemberDao] getMember");
+        log.info("[MemberDao] getMember");
         String sql="SELECT * FROM kim_tbl_member;";
         List <MemberDTO> MemberDTOs=new ArrayList<MemberDTO>();
         try {
@@ -89,8 +90,9 @@ public class MemberDao {
 
     }
 
+
     public void editMember(MemberDTO memberDTO) {
-        System.out.println("[MemberDao] editMember");
+        log.info("[MemberDao] editMember");
         String sql="UPDATE kim_tbl_member SET m_isAdmin="+memberDTO.getM_isAdmin()+"," +
                                             " m_id='" +memberDTO.getM_id()+"'," +
                                             " m_pw='" +memberDTO.getM_pw()+"'," +
@@ -111,7 +113,7 @@ public class MemberDao {
     }
 
     public int subCoin(int m_coin,int m_no) {
-        System.out.println("[MemberDao] subCoin");
+        log.info("[MemberDao] subCoin");
         String sql="UPDATE kim_tbl_member SET m_coin=" +m_coin+", m_mod_date=NOW()" +
                 " WHERE m_no="+m_no+";";
         try {
@@ -126,7 +128,7 @@ public class MemberDao {
     }
 
     public MemberDTO selectMember(int m_no) {
-        System.out.println("[MemberDao] selectMember");
+        log.info("[MemberDao] selectMember");
 
         String sql="SELECT * FROM kim_tbl_member WHERE m_no="+m_no;
         List<MemberDTO> memberDTOs =new ArrayList<MemberDTO>();
@@ -138,8 +140,6 @@ public class MemberDao {
         catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println(memberDTOs.size());
-
         return !memberDTOs.isEmpty() ? memberDTOs.get(0):null;
     }
 }

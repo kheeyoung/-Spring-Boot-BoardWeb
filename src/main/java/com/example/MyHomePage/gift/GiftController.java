@@ -4,7 +4,9 @@ package com.example.MyHomePage.gift;
 import com.example.MyHomePage.Memeber.MemberDTO;
 import com.example.MyHomePage.item.ItemDTO;
 import com.example.MyHomePage.item.ItemService;
+import com.example.MyHomePage.likePoint.LikePointDTO;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import java.util.Random;
 
 
 @Controller
+@Slf4j
 public class GiftController {
     @Autowired
     GiftService GiftService;
@@ -23,23 +26,29 @@ public class GiftController {
     ItemService ItemService;
     @Autowired
     com.example.MyHomePage.Memeber.MemberService MemberService;
+
     //선물 게시판 매핑
     @GetMapping("/gift")
     public String gift(Model model, HttpSession session){
-        System.out.println("[GiftController] gift");
+        log.info("[GiftController] gift");
         String nextPage = "gift/gift";
-        MemberDTO loginedMemberDTO=(MemberDTO) session.getAttribute("loginedMemberDTO"); //로그인 정보 받아오기
+        MemberDTO loginedMemberDTO=(MemberDTO) session.getAttribute("loginedMemberDTO"); //세션으로부터 로그인 정보 받아오기
         List<GiftDTO> GiftDTOs=GiftService.getGift(); //전체 선물 목록 받아오기
-        List<ItemDTO> ItemDTOs=ItemService.getMyItem(loginedMemberDTO.getM_no()); //보유 선물 목록 받아오기
+        List<ItemDTO> MyItems=ItemService.getMyItem(loginedMemberDTO.getM_no()); //보유 선물 목록 받아오기
+        List<LikePointDTO> LikePointDTOs=ItemService.getLikePoint(loginedMemberDTO.getM_no()); //호감도 받아오기
 
-        MemberDTO newloginedMemberDTO=MemberService.loginConfirm(loginedMemberDTO.getM_no()); //서비스로부터 로그인 정보를 받아온다.
+
+
+        MemberDTO newloginedMemberDTO=MemberService.loginConfirm(loginedMemberDTO.getM_no()); //서비스로부터(DB) 로그인 정보를 받아온다.
         session.setAttribute("loginedMemberDTO",newloginedMemberDTO);//코인 갱신
         session.setMaxInactiveInterval(60*30);
 
         //모델로 넘겨주기
         model.addAttribute("GiftDTOs", GiftDTOs);
         model.addAttribute("Coin", loginedMemberDTO.getM_coin());
-        model.addAttribute("ItemDTOs", ItemDTOs);
+        model.addAttribute("MyItems", MyItems);
+        model.addAttribute("LikePointDTOs", LikePointDTOs);
+
 
 
         return nextPage;
@@ -48,7 +57,7 @@ public class GiftController {
     //선물 뽑기
     @PostMapping("/gift/giftToGet")
     public String giftToGet(HttpSession session, Model model){
-        System.out.println("[GiftController] giftToGet");
+        log.info("[GiftController] giftToGet");
         String nextPage = "redirect:/gift";
         MemberDTO loginedMemberDTO=(MemberDTO) session.getAttribute("loginedMemberDTO"); //로그인 정보 받아오기
         int m_coin=loginedMemberDTO.getM_coin(); //현재 코인 가져오기
@@ -84,7 +93,7 @@ public class GiftController {
 
     @PostMapping("/gift/AddGift")
     public String giftAdd(GiftDTO giftDTO,Model model){
-        System.out.println("[GiftController] AddGift");
+        log.info("[GiftController] AddGift");
         String nextPage = "redirect:/manager";
         int AddGift= GiftService.AddGift(giftDTO);
         if(AddGift==-1){ //선물 추가 실패했을 경우
@@ -98,7 +107,7 @@ public class GiftController {
 
     @GetMapping("/gift/giftDelete")
     public String giftDelete(@RequestParam(value="g_no") String g_no,Model model){
-        System.out.println("[GiftController] giftDelete");
+        log.info("[GiftController] giftDelete");
         String nextPage = "redirect:/manager";
         int giftDelete= GiftService.giftDelete(g_no);
         if(giftDelete==-1){ //선물 추가 실패했을 경우
