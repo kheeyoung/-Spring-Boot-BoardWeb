@@ -12,4 +12,5 @@ public class GiftDTO {
     String g_giftOwner;
     String g_reg_date;
     String g_mod_date;
+
 }

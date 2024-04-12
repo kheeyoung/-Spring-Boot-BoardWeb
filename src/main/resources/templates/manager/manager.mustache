@@ -49,6 +49,36 @@
 </div>
 
 <br><br><br>
+<div>
+    특별 선물 목록
+    <table>
+        <tr>
+            <th scope="col">no</th>
+            <th scope="col">특별 선물 명</th>
+            <th scope="col">이미지</th>
+            <th scope="col">선물 주인</th>
+            <th scope="col">등록일</th>
+            <th scope="col">최종 수정일</th>
+            <th scope="col"></th>
+        </tr>
+        <tbody>
+        {{#SpecialGiftDTOs}}
+
+            <tr align="center" style="cursor:pointer;">
+                <td>{{sg_no}}</td>
+                <td>{{sg_name}}</td>
+                <td><img src="{{sg_filePath}}"></td>
+                <td>{{sg_ownner}}</td>
+                <td>{{sg_reg_date}}</td>
+                <td>{{sg_mod_date}}</td>
+                <td> <button type="button" onClick="location.href='/gift/giftDelete?g_no={{sg_no}}'">삭제</button> </td>
+            </tr>
+        {{/SpecialGiftDTOs}}
+        </tbody>
+    </table>
+
+</div>
+<br><br><br>
 
 <h3>멤버 정보 변경</h3>
 <table>

@@ -14,6 +14,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/gift");
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/manager");
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/board/boardDeail");
+        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/myPage");
     }
 
 }

@@ -47,6 +47,7 @@ public class BoardController {
         return nextPage;
     }
 
+    //글 쓰기 화면 매핑
     @GetMapping("/board/boardToPost")
     public String toPost(Model model,HttpSession session){
         log.info("[BoardController] toPost");
@@ -61,6 +62,7 @@ public class BoardController {
         return nextPage;
     }
 
+    //글 쓰기 확인
     @PostMapping("/board/toPost_Confirm")
     public String toPost_Confirm(BoardDTO boardDTO, HttpSession session,Model model){
         log.info("[BoardController] toPost_Confirm");
@@ -95,6 +97,7 @@ public class BoardController {
         return nextPage;
     }
 
+    //글 자세히 보기
     @GetMapping("/board/boardDeail")
     public String boardDeail(@RequestParam(value="b_no") int b_no, Model model, HttpSession session){
         log.info("[BoardController] boardDeail");
@@ -111,6 +114,7 @@ public class BoardController {
         return nextPage;
     }
 
+    //글 수정하기 화면
     @PostMapping("/board/boardToUpdatePost")
     public String boardToUpdatePost(@RequestParam(value="b_no") int b_no,
                                     @RequestParam(value="b_name") String b_name,
@@ -142,6 +146,7 @@ public class BoardController {
         return nextPage;
     }
 
+    //글 수정하기 확인
     @PostMapping("/board/boardToUpdatePost_Confirm")
     public String boardToUpdatePost_Confirm(BoardDTO boardDTO,Model model){
         log.info("[BoardController] boardToUpdatePost_Confirm");
@@ -161,13 +166,14 @@ public class BoardController {
         return nextPage;
     }
 
+    //글 삭제하기
     @PostMapping("/board/boardToDeletePost")
     public String boardToDeletePost(HttpSession session, BoardDTO boardDTO,Model model){
         log.info("[BoardController] boardToDeletePost");
         String nextPage = "redirect:/board";
         MemberDTO loginedMemberDTO=(MemberDTO) session.getAttribute("loginedMemberDTO"); //로그인 정보 받아오기
         //글 삭제 권한이 있나 확인
-        if(boardDTO.getM_name().equals(loginedMemberDTO.getM_name())) {
+        if(boardDTO.getM_name().equals(loginedMemberDTO.getM_name()) || loginedMemberDTO.getM_isAdmin()==1) { //글 쓴 본인이거나, 관리자면 삭제 가능
             int result = BoardService.DeletePost(boardDTO.getB_no()); //서비스로부터 글 삭제 성공 여부를 받아온다.
             if (result == -1) {
                 //만약 수정 실패시 실패 페이지를 보여준다.

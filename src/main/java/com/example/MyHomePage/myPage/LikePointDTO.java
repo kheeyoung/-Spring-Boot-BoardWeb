@@ -1,4 +1,4 @@
-package com.example.MyHomePage.likePoint;
+package com.example.MyHomePage.myPage;
 
 import lombok.Getter;
 import lombok.Setter;

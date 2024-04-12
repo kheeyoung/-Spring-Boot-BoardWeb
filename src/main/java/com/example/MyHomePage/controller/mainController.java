@@ -4,6 +4,8 @@ import com.example.MyHomePage.Memeber.MemberDTO;
 import com.example.MyHomePage.Memeber.MemberService;
 import com.example.MyHomePage.gift.GiftDTO;
 import com.example.MyHomePage.gift.GiftService;
+import com.example.MyHomePage.myPage.MyPageService;
+import com.example.MyHomePage.myPage.SpecialGiftDTO;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,9 +18,11 @@ import java.util.List;
 @Controller
 public class mainController {
     @Autowired
-    com.example.MyHomePage.Memeber.MemberService MemberService;
+    MemberService MemberService;
     @Autowired
-    com.example.MyHomePage.gift.GiftService GiftService;
+    GiftService GiftService;
+    @Autowired
+    MyPageService MyPageService;
 
     //페이지 매핑
 
@@ -64,6 +68,8 @@ public class mainController {
             model.addAttribute("MemberDTOs",MemberDTOs);
             List <GiftDTO> GiftDTOs= GiftService.getGift(); //선물 서비스로부터 giftDTO를 받아온다.
             model.addAttribute("GiftDTOs",GiftDTOs);
+            List<SpecialGiftDTO> SpecialGiftDTOs=MyPageService.getSpecialGift(); //특별 선물도 받아온다.
+            model.addAttribute("SpecialGiftDTOs",SpecialGiftDTOs);
         }
 
         return nextPage;

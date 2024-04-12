@@ -14,24 +14,7 @@
 </form>
 
 
-<br><br><br>
-<h1>보유 선물 목록</h1>
-<table>
-    <tr>
-        <th scope="col">선물 명</th>
-        <th scope="col">획득일</th>
 
-        <th scope="col"></th>
-    </tr>
-    <tbody>
-    {{#MyItems}}
-        <tr align="center" style="cursor:pointer;">
-            <td>{{i_name}}</td>
-            <td>{{i_reg_date}}</td>
-        </tr>
-    {{/MyItems}}
-    </tbody>
-</table>
 
 <br><br><br>
 <h1>호감도 목록</h1>
@@ -41,16 +24,18 @@
     <tr>
         <th scope="col">이름</th>
         <th scope="col">호감도</th>
+        <th scope="col"></th>
 
         <th scope="col"></th>
     </tr>
     <tbody>
     {{#LikePointDTOs}}
         <tr align="center" style="cursor:pointer;">
-
-            <td>{{name}}</td>
-            <td>{{point}}</td>
-
+            <form class="container" action="/gift/specialGiftToGet" method="post">
+                <td>{{name}}<input type="hidden"  name="name"     value={{name}}></td>
+                <td>{{point}}<input type="hidden"  name="point"     value={{point}}></td>
+                <td><button type="submit"> 특전 받기 </button></td>
+            </form>
         </tr>
         {{/LikePointDTOs}}
     </tbody>

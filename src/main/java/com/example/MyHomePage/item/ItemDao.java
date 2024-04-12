@@ -1,5 +1,7 @@
 package com.example.MyHomePage.item;
 
+import com.example.MyHomePage.myPage.LikePointDTO;
+import com.example.MyHomePage.myPage.SpecialGiftDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -7,6 +9,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +23,7 @@ public class ItemDao {
 
     public List<ItemDTO> getMyItem(int i_who_Have_m_no) { //사용한 적 없는 가진 아이템들
         log.info("[ItemDao] getMyItem");
-        String sql="SELECT * FROM kim_tbl_itemHave WHERE i_who_Have_m_no="+i_who_Have_m_no+" AND i_who_get IS NULL"; //가지고 있는 아이템 중에서 사용하지 않은 (=받은 사람이 없는) 아이템만 리턴
+        String sql="SELECT * FROM kim_tbl_itemHave WHERE i_who_Have_m_no="+i_who_Have_m_no+" AND i_who_get IS NULL AND i_is_special IS NULL"; //가지고 있는 일반 아이템 중에서 사용하지 않은 (=받은 사람이 없는) 아이템만 리턴
         List <ItemDTO> ItemDTOs=new ArrayList<ItemDTO>();
         try {
             RowMapper<ItemDTO> rowMapper= BeanPropertyRowMapper.newInstance(ItemDTO.class);
@@ -31,9 +35,9 @@ public class ItemDao {
         return ItemDTOs;
     }
 
-    public List<ItemDTO> getMyUsedItem(int i_who_Have_m_no) { //사용한 적 있는 가진 아이템들
+    public List<ItemDTO> getMyUsedItem(int i_who_Have_m_no) { //사용한 적 있는 가진 아이템들 가져오기
         log.info("[ItemDao] getMyItem");
-        String sql="SELECT * FROM kim_tbl_itemHave WHERE i_who_Have_m_no="+i_who_Have_m_no+" AND i_who_get IS NOT NULL"; //가지고 있는 아이템 중에서 사용한 (=받은 사람이 있는) 아이템만 리턴
+        String sql="SELECT * FROM kim_tbl_itemHave WHERE i_who_Have_m_no="+i_who_Have_m_no+" AND i_who_get IS NOT NULL AND i_is_special IS NULL"; //가지고 있는 아이템 중에서 사용한 (=받은 사람이 있는) 아이템만 리턴
         List <ItemDTO> ItemDTOs=new ArrayList<ItemDTO>();
         try {
             RowMapper<ItemDTO> rowMapper= BeanPropertyRowMapper.newInstance(ItemDTO.class);
@@ -47,7 +51,7 @@ public class ItemDao {
 
     public ItemDTO getMyItem(int mNo, String bGift) {   //사용한 적 없는 가진 아이템 중 가장 오래된 것
         log.info("[ItemDao] getMyItem");
-        String sql="SELECT * FROM kim_tbl_itemHave WHERE i_who_Have_m_no='"+mNo+"' AND i_name='"+bGift+"' AND i_who_get IS NULL ORDER BY i_reg_date"; //가지고 있는 아이템 중에서 사용하지 않은 (=받은 사람이 없는) 아이템만 리턴
+        String sql="SELECT * FROM kim_tbl_itemHave WHERE i_who_Have_m_no='"+mNo+"' AND i_name='"+bGift+"' AND i_who_get IS NULL ORDER BY i_reg_date AND i_is_special IS NULL"; //가지고 있는 아이템 중에서 사용하지 않은 (=받은 사람이 없는) 아이템만 리턴
         List <ItemDTO> ItemDTOs=new ArrayList<ItemDTO>();
         try {
             RowMapper<ItemDTO> rowMapper= BeanPropertyRowMapper.newInstance(ItemDTO.class);
@@ -85,4 +89,65 @@ public class ItemDao {
         }
 
     }
+
+    public List<LikePointDTO> getMyLikePoint(int m_no) {
+        log.info("[ItemDao] getMyLikePoint");
+        String sql= "SELECT i_who_get, SUM(i_get_point) FROM kim_tbl_itemhave WHERE i_who_Have_m_no=? AND i_who_get!='' GROUP BY i_who_get";
+        List<LikePointDTO> LikePointDTOs=new ArrayList<LikePointDTO>();
+        try {
+            LikePointDTOs=jdbcTemplate.query(sql, new RowMapper<LikePointDTO>() {
+                @Override
+                public LikePointDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    LikePointDTO LikePointDTO=new LikePointDTO();
+                    LikePointDTO.setPoint(rs.getInt("SUM(i_get_point)"));
+
+                    LikePointDTO.setName(rs.getString("i_who_get")); //이름을 받아온다.
+
+                    return LikePointDTO;
+                }
+            },m_no);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return LikePointDTOs;
+    }
+
+    public void addSpecialItme(String name, int m_no) {//소유 특별 아이템 추가하기
+        log.info("[ItemDao] addSpecialItme");
+        String sql = "INSERT INTO kim_tbl_itemhave (i_name,i_who_Have_m_no,i_is_special,i_reg_date,i_mod_date) VALUE(?,?,?,NOW(),NOW())";
+        jdbcTemplate.update(sql, name+"의 특별 선물", m_no,"1");
+
+    }
+
+    public int checkHaveSpecialGift(String name, int m_no) {
+        log.info("[ItemDao] checkHaveSpecialGift");
+        String sql="SELECT * FROM kim_tbl_itemHave WHERE i_who_Have_m_no="+m_no+" AND i_name='"+name+"의 특별 선물' AND i_is_special = '1'"; //가지고 있는 특별 아이템중 그 캐릭터의 특별 선물 찾기
+        List <ItemDTO> ItemDTOs=new ArrayList<ItemDTO>();
+        try {
+            RowMapper<ItemDTO> rowMapper= BeanPropertyRowMapper.newInstance(ItemDTO.class);
+            ItemDTOs=jdbcTemplate.query(sql,rowMapper);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return ItemDTOs.size()>0 ? 1: 0;
+    }
+
+    public List<SpecialGiftDTO> getMySpecialItem(int m_no) {
+        log.info("[ItemDao] getMySpecialItem");
+        String sql="SELECT sg_filePath, sg_name FROM kim_tbl_itemhave JOIN kim_tbl_specialgift ON kim_tbl_itemhave.i_name=kim_tbl_specialgift.sg_name \n" +
+                "WHERE kim_tbl_itemhave.i_who_Have_m_no="+m_no+" AND kim_tbl_itemhave.i_is_special = '1'"; //가지고 있는 특별 선물 찾기
+        List<SpecialGiftDTO> SpecialGiftDTOs =new ArrayList<SpecialGiftDTO>();
+
+        try{
+            RowMapper<SpecialGiftDTO> rowMapper= BeanPropertyRowMapper.newInstance(SpecialGiftDTO.class);
+            SpecialGiftDTOs=jdbcTemplate.query(sql,rowMapper);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return SpecialGiftDTOs;
+    }
+
 }

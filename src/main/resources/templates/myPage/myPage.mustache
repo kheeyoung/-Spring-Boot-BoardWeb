@@ -1,0 +1,130 @@
+{{>layouts/header}}
+<!--내용-->
+<h1>MY PAGE</h1>
+<table>
+    <tr>
+        <th scope="col">no</th>
+
+        <th scope="col">ID</th>
+        <th scope="col">PW</th>
+        <th scope="col">이름</th>
+        <th scope="col">성별</th>
+        <th scope="col">메일</th>
+        <th scope="col">전화번호</th>
+        <th scope="col">등록일</th>
+        <th scope="col">최종 수정일</th>
+        <th scope="col">코인</th>
+        <th scope="col">수정</th>
+    </tr>
+    <tbody>
+    {{#MemberDTO}}
+        <tr align="center" style="cursor:pointer;">
+            <form class="container" action="/myPage/editMember" method="post">
+                <td>{{m_no}}<input type="hidden"  name="m_no"     value={{m_no}}><input type="hidden"  name="m_isAdmin"     value={{m_isAdmin}}></td>
+                <td><input type="text"  name="m_id" 	     value={{m_id}}></td>
+                <td><input type="text"  name="m_pw" 	     value={{m_pw}}></td>
+                <td><input type="text"  name="m_name"     value={{m_name}}></td>
+                <td><input type="text"  name="m_gender"     value={{m_gender}}></td>
+                <td><input type="text"  name="m_mail" 	     value={{m_mail}}></td>
+                <td><input type="text"  name="m_phone" 	     value={{m_phone}}></td>
+                <td>{{m_reg_date}}</td>
+                <td>{{m_mod_date}}</td>
+                <td>{{m_coin}}</td>
+
+                <td><button type="submit"> 수정 확인 </button></td>
+            </form>
+        </tr>
+    {{/MemberDTO}}
+    </tbody>
+</table>
+
+<br><br><br>
+<h1>보유 선물 목록</h1>
+<table>
+    <tr>
+        <th scope="col">선물 명</th>
+        <th scope="col">획득일</th>
+
+        <th scope="col"></th>
+    </tr>
+    <tbody>
+    {{#MyItems}}
+        <tr align="center" style="cursor:pointer;">
+            <td>{{i_name}}</td>
+            <td>{{i_reg_date}}</td>
+        </tr>
+    {{/MyItems}}
+    </tbody>
+</table>
+<br><br><br>
+<!--
+<h1>보유 특별 선물 목록</h1>
+<table>
+    <tr>
+        <th scope="col">선물 명</th>
+        <th scope="col">획득일</th>
+
+        <th scope="col"></th>
+    </tr>
+    <tbody>
+    {{#SpecialGift}}
+        <tr align="center" style="cursor:pointer;">
+            <td>{{sg_name}}</td>
+            <td>{{sg_ownner}}</td>
+        </tr>
+    {{/SpecialGift}}
+    </tbody>
+</table>
+-->
+<br><br><br>
+<h1>호감도 목록</h1>
+
+<table>
+
+    <tr>
+        <th scope="col">이름</th>
+        <th scope="col">호감도</th>
+        <th scope="col"></th>
+
+        <th scope="col"></th>
+    </tr>
+    <tbody>
+    {{#LikePointDTOs}}
+        <tr align="center" style="cursor:pointer;">
+            <td>{{name}}<input type="hidden"  name="name"     value={{name}}></td>
+            <td>{{point}}<input type="hidden"  name="point"     value={{point}}></td>
+        </tr>
+    {{/LikePointDTOs}}
+    </tbody>
+</table>
+<br><br><br>
+
+<h1> 내 특별 선물 추가하기 </h1>
+<form class="container" action="/SpecialGift/addMySpecialGift" method="post" enctype="multipart/form-data">
+    <input type="file"  name="sg_giftImage">
+    <td><button type="submit"> 추가하기 </button></td>
+</form>
+
+<br><br><br>
+<div>
+    획득 특별 선물 목록
+    <table>
+        <tr>
+            <th scope="col">특별 선물 명</th>
+            <th scope="col">이미지</th>
+            <th scope="col"></th>
+        </tr>
+        <tbody>
+        {{#SpecialGiftDTOs}}
+
+            <tr align="center" style="cursor:pointer;">
+                <td>{{sg_name}}</td>
+                <td><img src="{{sg_filePath}}"></td>
+            </tr>
+        {{/SpecialGiftDTOs}}
+        </tbody>
+    </table>
+
+</div>
+<br><br><br>
+{{>layouts/footer}}

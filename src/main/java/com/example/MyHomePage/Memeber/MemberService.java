@@ -85,4 +85,5 @@ public class MemberService {
         }
         return loginedMemberDTO;
     }
+
 }
