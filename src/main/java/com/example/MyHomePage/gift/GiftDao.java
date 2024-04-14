@@ -31,6 +31,7 @@ public class GiftDao {
         return giftDTOS;
     }
 
+    //특정 선물 선물 명으로 가져오기
     public GiftDTO getGift(String bGift) {
         log.info("[GiftDao] getGift");
         String sql= "SELECT * FROM kim_tbl_gift WHERE g_name='"+bGift+"'";
@@ -45,7 +46,7 @@ public class GiftDao {
         return giftDTOS.get(0);
     }
 
-
+    //선물 추가
     public int AddGift(GiftDTO giftDTO) {
         log.info("[GiftDao] AddGift");
         String sql= "INSERT INTO kim_tbl_gift (g_name,g_giftOwner,g_reg_date,g_mod_date,g_about) VALUE (?,?,NOW(),NOW(),?)";
@@ -59,6 +60,7 @@ public class GiftDao {
         return result;
     }
 
+    //선물 삭제
     public int giftDelete(String g_no) {
         log.info("[GiftDao] giftDelete");
         String sql= "DELETE FROM kim_tbl_gift WHERE g_no=?";

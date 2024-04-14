@@ -67,20 +67,35 @@ public class MyPageController {
 
         MemberDTO loginedMemberDTO=(MemberDTO) session.getAttribute("loginedMemberDTO"); //로그인 정보 받아오기
 
-        String projectPath=System.getProperty("user.dir")+"\\src\\main\\resources\\static\\SpecialGiftImage"; //이미지 저장될 경로
+        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\SpecialGiftImage"; //이미지 저장될 경로
 
-        UUID uuid=UUID.randomUUID(); //UUID (파일 식별자) 생성
-        String fileName=uuid+"_"+file.getOriginalFilename(); //파일 명 생성
+        UUID uuid = UUID.randomUUID(); //UUID (파일 식별자) 생성
+        String fileName = uuid + "_" + file.getOriginalFilename(); //파일 명 생성
 
-        File saveFile=new File(projectPath,fileName); //파일 생성.
+        File saveFile = new File(projectPath, fileName); //파일 생성.
         file.transferTo(saveFile); //파일 저장
 
-        SpecialGiftDTO specialGiftDTO=new SpecialGiftDTO(); //DB에 저장 할 특별 선물
-        specialGiftDTO.setSg_name(loginedMemberDTO.getM_name()+"의 특별 선물");
-        specialGiftDTO.setSg_filePath("SpecialGiftImage\\"+fileName);
+        SpecialGiftDTO specialGiftDTO = new SpecialGiftDTO(); //DB에 저장 할 특별 선물 DTO
+        specialGiftDTO.setSg_name(loginedMemberDTO.getM_name() + "의 특별 선물");
+        specialGiftDTO.setSg_filePath("SpecialGiftImage\\" + fileName);
         specialGiftDTO.setSg_ownner(loginedMemberDTO.getM_name());
 
-        MyPageService.saveSpecialGift(specialGiftDTO);
+        if(MyPageService.checkSomeonesSpecialGift(loginedMemberDTO.getM_name())){ //만약 이전에 저장된 특별 선물이 없을 경우
+            MyPageService.saveSpecialGift(specialGiftDTO); //새로 특별 선물 저장
+        }
+        else{//이전에 저장된 특별 선물이 있으면
+            //기존 것 수정
+            MyPageService.editSpecialGift(specialGiftDTO);
+        }
+        return nextPage;
+    }
+
+    //특별 선물 삭제하기
+    @GetMapping("/SpecialGift/deleteSpecialGift")
+    public String deleteSpecialGift(@RequestParam("sg_no") int sg_no) throws Exception{
+        log.info("[SpecialGiftController] deleteSpecialGift");
+        String nextPage="redirect:/manager";
+        MyPageService.deleteSpecialGift(sg_no);
 
         return nextPage;
     }

@@ -86,6 +86,7 @@ public class GiftController {
         return nextPage;
     }
 
+    //선물 추가
     @PostMapping("/gift/AddGift")
     public String giftAdd(GiftDTO giftDTO,Model model){
         log.info("[GiftController] AddGift");
@@ -123,7 +124,7 @@ public class GiftController {
         String nextPage = "result";
         if(LikePointDTO.getPoint()>=2){
             if(ItemService.checkHaveSpecialGift(LikePointDTO.getName(),loginedMemberDTO.getM_no()) != 1){ //만약 특별 선물을 받은 적 없다면
-                if(MyPageService.checkSomeonesSpecialGift(LikePointDTO.getName())){
+                if(MyPageService.checkSomeonesSpecialGift(LikePointDTO.getName())){ //특별 선물 등록 되어 있나 확인
                     model.addAttribute("result","실패");
                     model.addAttribute("reason",LikePointDTO.getName()+"님은 아직 특별 선물을 등록하지 않았어요.");
                 }

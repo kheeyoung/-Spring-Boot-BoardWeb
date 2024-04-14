@@ -16,6 +16,7 @@ import java.util.List;
 public class MyPageDao {
     @Autowired
     JdbcTemplate jdbcTemplate;
+    //자신의 특별 선물 추가하기
     public void saveSpecialGift(SpecialGiftDTO specialGiftDTO) {
         log.info("[MyPageDao] saveSpecialGift");
         String sql="INSERT INTO kim_tbl_specialGift (sg_name,sg_filePath,sg_ownner,sg_reg_date,sg_mod_date) VALUE (?,?,?,NOW(),NOW())";
@@ -26,10 +27,9 @@ public class MyPageDao {
         catch (Exception e){
             e.printStackTrace();
         }
-
-
     }
 
+    //특별 선물 전부 얻기
     public List<SpecialGiftDTO> getSpecialGift() {
         log.info("[MyPageDao] getSpecialGift");
         String sql="SELECT * FROM kim_tbl_specialGift;";
@@ -46,6 +46,7 @@ public class MyPageDao {
         return SpecialGiftDTOs;
     }
 
+    //특정 멤버의 특별 선물이 등록 되어 있나 확인
     public boolean checkSomeonesSpecialGift(String name) {
         log.info("[MyPageDao] checkSomeonesSpecialGift");
         String sql="SELECT * FROM kim_tbl_specialGift WHERE sg_ownner='"+name+"';";
@@ -60,5 +61,30 @@ public class MyPageDao {
             e.printStackTrace();
         }
         return SpecialGiftDTOs.size()!=0 ? false:true;
+    }
+
+    //특별 선물 지우기
+    public void deleteSpecialGift(int sg_no) {
+        log.info("[MyPageDao] deleteSpecialGift");
+        String sql="DELETE FROM kim_tbl_specialGift WHERE sg_no='"+sg_no+"';";
+
+        try {
+            jdbcTemplate.update(sql);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void editSpecialGift(SpecialGiftDTO specialGiftDTO) {
+        log.info("[MyPageDao] editSpecialGift");
+        String sql="UPDATE kim_tbl_specialGift SET sg_filePath=?, sg_mod_date=NOW() WHERE sg_ownner=?;";
+
+        try {
+            jdbcTemplate.update(sql,specialGiftDTO.getSg_filePath(),specialGiftDTO.getSg_ownner());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

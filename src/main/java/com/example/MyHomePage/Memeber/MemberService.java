@@ -50,10 +50,13 @@ public class MemberService {
         }
     }
 
+    //멤버 전부 가져오기
     public List<MemberDTO> getMember() {
         log.info("[MemberService] getMember");
         return MemberDao.getMember();
     }
+
+    //멤버 이름 가져오기
     public List<String> getMemberId() { //멤버 이름 가져오기
         log.info("[MemberService] getMemberId");
         List<MemberDTO> MemberDTOs=MemberDao.getMember();
@@ -64,21 +67,25 @@ public class MemberService {
         return MemberName;
     }
 
+    //멤버 수정하기
     public void editMember(MemberDTO memberDTO) {
         log.info("[MemberService] editMember");
         MemberDao.editMember(memberDTO);
     }
 
+    //코인 빼기
     public int subCoin(int m_coin, int m_no) {
         log.info("[MemberService] subCoin");
         return MemberDao.subCoin(m_coin,m_no);
     }
 
+    //멤버 정보 DB에서 가져오기
     public MemberDTO loginConfirm(int m_no) {
         log.info("[MemberService] loginConfirm");
         MemberDTO loginedMemberDTO=MemberDao.selectMember(m_no); //Dao로 부터 로그인 된 값을 가져온다.
         if(loginedMemberDTO!=null){
             log.info("[MemberService] loginConfirm : !!로그인 성공!!");
+            //
         }
         else {
             log.info("[MemberService] loginConfirm : 로그인 실패!");

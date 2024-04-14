@@ -2,6 +2,7 @@ package com.example.MyHomePage;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -15,6 +16,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/manager");
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/board/boardDeail");
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/myPage");
+    }
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**")
+                .addResourceLocations("file:src/main/resources/static/");
     }
 
 }
