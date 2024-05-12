@@ -49,10 +49,10 @@ public class GiftDao {
     //선물 추가
     public int AddGift(GiftDTO giftDTO) {
         log.info("[GiftDao] AddGift");
-        String sql= "INSERT INTO kim_tbl_gift (g_name,g_giftOwner,g_reg_date,g_mod_date,g_about) VALUE (?,?,NOW(),NOW(),?)";
+        String sql= "INSERT INTO kim_tbl_gift (g_name,g_giftOwner_no,g_reg_date,g_mod_date,g_about) VALUE (?,?,NOW(),NOW(),?)";
         int result=-1;
         try {
-            result=jdbcTemplate.update(sql,giftDTO.getG_name(),giftDTO.getG_giftOwner(),giftDTO.getG_about());
+            result=jdbcTemplate.update(sql,giftDTO.getG_name(),giftDTO.getG_giftOwner_no(),giftDTO.getG_about());
         }
         catch (Exception e){
             e.printStackTrace();

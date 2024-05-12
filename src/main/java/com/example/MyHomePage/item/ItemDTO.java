@@ -9,7 +9,7 @@ public class ItemDTO {
     int i_no;
     String i_name;
     int i_who_Have_m_no;
-    String i_who_get;
+    Integer i_who_get_m_no;
     int i_get_point;
     String i_is_special;
     String i_reg_date;

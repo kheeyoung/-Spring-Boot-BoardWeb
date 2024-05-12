@@ -2,26 +2,60 @@
 <!--내용-->
 <!-- 리스트 게시판 시작-->
 
+<div class="container">
+    <table border='1' class="table">
+        <tr>
+            <th scope="col">제목</th>
+            <td>{{boardDTO.b_name}}</td>
+        </tr>
+        <tr>
+            <th scope="col">보내는 사람</th>
+            <td>{{boardDTO.b_writer_m_name}}</td>
+        </tr>
+        <tr>
+            <th scope="col">받는 사람</th>
+            <td>{{boardDTO.b_receiver_m_name}}</td>
+        </tr>
+        <tr>
+            <th scope="col">선물명</th>
+            <td>{{boardDTO.b_gift}}</td>
+        </tr>
+        <tr>
+            <th scope="col">내용</th>
+            <td>{{boardDTO.b_context}}</td>
+        </tr>
+        <tr>
+            <th scope="col">날짜</th>
+            <td>{{boardDTO.b_reg_date}}</td>
+        </tr>
+        <tr>
+            <th scope="col">조회수</th>
+            <td>{{boardDTO.b_viewnum}}</td>
+        </tr>
+    </table>
+</div>
 
-제목 : {{boardDTO.b_name}} <br>
-보내는 사람 : {{boardDTO.m_name}} / 받는 사람 : {{boardDTO.b_receiver}} / 선물 : {{boardDTO.b_gift}} / 등록일 : {{boardDTO.b_reg_date}}<br>
-내용:{{boardDTO.b_context}}
-
-<form action="/board/boardToUpdatePost" method="post">
-    <input type="hidden" name="b_no" value="{{boardDTO.b_no}}">
-    <input type="hidden" name="b_name" value="{{boardDTO.b_name}}">
-    <input type="hidden" name="m_name" value="{{boardDTO.m_name}}">
-    <input type="hidden" name="b_receiver" value="{{boardDTO.b_receiver}}">
-    <input type="hidden" name="b_gift" value="{{boardDTO.b_gift}}">
-    <input type="hidden" name="b_reg_date" value="{{boardDTO.b_reg_date}}">
-    <input type="hidden" name="b_context" value="{{boardDTO.b_context}}">
-    <button type="submit"> 글 수정 </button>
-</form>
-
-<form action="/board/boardToDeletePost" method="post">
-    <input type="hidden" name="b_no" value={{boardDTO.b_no}}>
-    <input type="hidden" name="m_name" value={{boardDTO.m_name}}>
-    <button type="submit"> 글 삭제 </button>
-</form>
-
+<div class="container">
+    <div class="container">
+        <form action="/board/boardToUpdatePost" method="post">
+            <input type="hidden" name="b_no" value="{{boardDTO.b_no}}">
+            <input type="hidden" name="b_name" value="{{boardDTO.b_name}}">
+            <input type="hidden" name="b_writer_m_name" value="{{boardDTO.b_writer_m_name}}">
+            <input type="hidden" name="b_receiver_m_name" value="{{boardDTO.b_receiver_m_name}}">
+            <input type="hidden" name="b_gift" value="{{boardDTO.b_gift}}">
+            <input type="hidden" name="b_reg_date" value="{{boardDTO.b_reg_date}}">
+            <input type="hidden" name="b_context" value="{{boardDTO.b_context}}">
+            <input type="hidden" name="b_writer_m_no" value="{{boardDTO.b_writer_m_no}}">
+            <input type="hidden" name="b_receiver_m_no" value="{{boardDTO.b_receiver_m_no}}">
+            <button type="submit" class="btn btn-dark"> 글 수정 </button>
+        </form>
+    </div>
+    <div class="container">
+        <form action="/board/boardToDeletePost" method="post">
+            <input type="hidden" name="b_no" value={{boardDTO.b_no}}>
+            <input type="hidden" name="b_writer_m_no" value={{boardDTO.b_writer_m_no}}>
+            <button type="submit" class="btn btn-dark"> 글 삭제 </button>
+        </form>
+    </div>
+</div>
 {{>layouts/footer}}

@@ -24,7 +24,7 @@ public class ItemDao {
     //특정 멤버가 가진 아이템 가져오기 (m_no로)
     public List<ItemDTO> getMyItem(int i_who_Have_m_no) { //사용한 적 없는 가진 아이템들
         log.info("[ItemDao] getMyItem");
-        String sql="SELECT * FROM kim_tbl_itemHave WHERE i_who_Have_m_no="+i_who_Have_m_no+" AND i_who_get IS NULL AND i_is_special IS NULL"; //가지고 있는 일반 아이템 중에서 사용하지 않은 (=받은 사람이 없는) 아이템만 리턴
+        String sql="SELECT * FROM kim_tbl_itemHave WHERE i_who_Have_m_no="+i_who_Have_m_no+" AND i_who_get_m_no IS NULL AND i_is_special IS NULL"; //가지고 있는 일반 아이템 중에서 사용하지 않은 (=받은 사람이 없는) 아이템만 리턴
         List <ItemDTO> ItemDTOs=new ArrayList<ItemDTO>();
         try {
             RowMapper<ItemDTO> rowMapper= BeanPropertyRowMapper.newInstance(ItemDTO.class);
@@ -54,7 +54,7 @@ public class ItemDao {
     //특정 멤버가 가진 특정 아이템중 가장 오래된 아이템 가져오기 (m_no과 i_name으로)
     public ItemDTO getMyItem(int mNo, String bGift) {   //사용한 적 없는 가진 아이템 중 가장 오래된 것
         log.info("[ItemDao] getMyItem");
-        String sql="SELECT * FROM kim_tbl_itemHave WHERE i_who_Have_m_no='"+mNo+"' AND i_name='"+bGift+"' AND i_who_get IS NULL ORDER BY i_reg_date AND i_is_special IS NULL"; //가지고 있는 아이템 중에서 사용하지 않은 (=받은 사람이 없는) 아이템만 리턴
+        String sql="SELECT * FROM kim_tbl_itemHave WHERE i_who_Have_m_no='"+mNo+"' AND i_name='"+bGift+"' AND i_who_get_m_no IS NULL ORDER BY i_reg_date AND i_is_special IS NULL"; //가지고 있는 아이템 중에서 사용하지 않은 (=받은 사람이 없는) 아이템만 리턴
         List <ItemDTO> ItemDTOs=new ArrayList<ItemDTO>();
         try {
             RowMapper<ItemDTO> rowMapper= BeanPropertyRowMapper.newInstance(ItemDTO.class);
@@ -81,9 +81,9 @@ public class ItemDao {
 
 
     //특정 멤버가 아이템 사용하기
-    public void useItem(int useItemNo,String b_receiver, int likePoint) { //아이템 사용하기
+    public void useItem(int useItemNo,int b_receiver_m_no, int likePoint) { //아이템 사용하기
         log.info("[ItemDao] useItem");
-        String sql= "UPDATE kim_tbl_itemHave SET i_who_get= '"+b_receiver+"', i_get_point="+likePoint+", i_mod_date=NOW() WHERE i_no="+useItemNo;
+        String sql= "UPDATE kim_tbl_itemHave SET i_who_get_m_no= '"+b_receiver_m_no+"', i_get_point="+likePoint+", i_mod_date=NOW() WHERE i_no="+useItemNo;
 
         try {
             jdbcTemplate.update(sql);
@@ -97,16 +97,17 @@ public class ItemDao {
     //특정 멤버의 호감도 계산하기
     public List<LikePointDTO> getMyLikePoint(int m_no) {
         log.info("[ItemDao] getMyLikePoint");
-        String sql= "SELECT i_who_get, SUM(i_get_point) FROM kim_tbl_itemhave WHERE i_who_Have_m_no=? AND i_who_get!='' GROUP BY i_who_get";
+        String sql= "SELECT kim_tbl_itemhave.i_who_get_m_no, SUM(kim_tbl_itemhave.i_get_point), kim_tbl_member.m_name FROM kim_tbl_itemhave JOIN kim_tbl_member ON kim_tbl_itemhave.i_who_get_m_no=kim_tbl_member.m_no WHERE i_who_Have_m_no=" +m_no+
+                " AND i_who_get_m_no!='' GROUP BY i_who_get_m_no;";
         List<LikePointDTO> LikePointDTOs=new ArrayList<LikePointDTO>();
         try {
             LikePointDTOs=jdbcTemplate.query(sql, new RowMapper<LikePointDTO>() {
                 @Override
                 public LikePointDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
                     LikePointDTO LikePointDTO=new LikePointDTO();
-                    LikePointDTO.setPoint(rs.getInt("SUM(i_get_point)"));
+                    LikePointDTO.setPoint(rs.getInt("sum(kim_tbl_itemhave.i_get_point)"));
 
-                    LikePointDTO.setName(rs.getString("i_who_get")); //이름을 받아온다.
+                    LikePointDTO.setName(rs.getString("m_name")); //이름을 받아온다.
 
                     return LikePointDTO;
                 }
@@ -138,7 +139,7 @@ public class ItemDao {
         catch (Exception e){
             e.printStackTrace();
         }
-        return ItemDTOs.size()>0 ? 1: 0;
+        return !ItemDTOs.isEmpty() ? 1: 0;
     }
 
     //특정 멤버가 가지고 있는 특별 선물 전부 가져오기

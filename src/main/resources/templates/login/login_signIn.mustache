@@ -1,27 +1,47 @@
 {{>layouts/header}}
 <!--내용-->
-<h1>회원가입</h1>
-<form class="container" action="/login/login_signIn_Confirm" method="post">
-    ID: <input type="text" name="m_id" 	placeholder="INPUT USER ID."><br>
-    PW: <input type="password" name="m_pw" 	placeholder="INPUT USER PW."><br>
-    Name: <input type="text" name="m_name" 	placeholder="INPUT USER NAME"><br>
-    Gender: <select name="m_gender">
-                <option>기타</option>
-                <option>남성</option>
-                <option>여성</option>
-            </select><br>
-    Mail: <input type="text" name="m_mail1" 	placeholder="INPUT USER MAIL.">@
-            <select name="m_mail2">
-                <option>gmail.com</option>
-                <option>naver.com</option>
-                <option>daum.com</option>
-                <option>직접 입력</option>
-            </select>
-            <input type="text" name="m_mail3" 	placeholder="INPUT MAIL."><br>
-    Phone: <input type="text" name="m_phone" 	placeholder="INPUT USER PHONE."><br>
+<div class="container">
+    <h1>회원가입</h1>
+    <form class="container" action="/login/login_signIn_Confirm" method="post">
+        <table class="table">
+            <tr>
+                <th scope="col">ID</th>
+                <td><input type="text" name="m_id" 	placeholder="INPUT USER ID."></td>
+            </tr>
+            <tr>
+                <th scope="col">PW</th>
+                <td><input type="password" name="m_pw" 	placeholder="INPUT USER PW."></td>
+            </tr>
+            <tr>
+                <th scope="col">이름</th>
+                <td><input type="text" name="m_name" 	placeholder="INPUT USER NAME"></td>
+            </tr>
+            <tr>
+                <th scope="col">성별</th>
+                <td><select name="m_gender">
+                    <option>기타</option>
+                    <option>남성</option>
+                    <option>여성</option>
+                </select></td>
+            </tr>
+            <tr>
+                <th scope="col">메일</th>
+                <td><input type="text" name="m_mail1" 	placeholder="INPUT USER MAIL.">@
+                    <select name="m_mail2">
+                        <option>gmail.com</option>
+                        <option>naver.com</option>
+                        <option>daum.com</option>
+                        <option>직접 입력</option>
+                    </select>
+                    <input type="text" name="m_mail3" 	placeholder="INPUT MAIL."></td>
+            </tr>
+            <tr>
+                <th scope="col">연락처</th>
+                <td><input type="text" name="m_phone" 	placeholder="INPUT USER PHONE."></td>
 
-
-    <button type="submit"> 회원가입 </button>
-    <input type="reset"	value="reset">
-</form>
+        </table>
+        <button type="submit" class="btn btn-dark"> 회원가입 </button>
+        <input type="reset"	value="reset" class="btn btn-dark">
+    </form>
+</div>
 {{>layouts/footer}}

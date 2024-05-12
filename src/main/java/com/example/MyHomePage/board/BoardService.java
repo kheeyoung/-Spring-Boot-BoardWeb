@@ -1,5 +1,6 @@
 package com.example.MyHomePage.board;
 
+import com.example.MyHomePage.Memeber.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import java.util.List;
 @Slf4j
 public class BoardService {
     @Autowired BoardDao boardDao;
+    @Autowired MemberService MemberService;
 
     //포스팅 관련 변수
     final static public int SUCCESS=1;
@@ -30,9 +32,16 @@ public class BoardService {
         return subBoardDTOS;
     }
 
-    public int PostConfirm(BoardDTO boardDTO, String username) {
+    public int PostConfirm(BoardDTO boardDTO, int b_writer_m_no) {
         log.info("[BoardService] PostConfirm");
-        int result = boardDao.PostConfirm(boardDTO, username);
+        //번호로 글쓴이/받는이 이름,번호 받아오기 (글쓴이는 이름,번호 / 받는 이르는 번호 세팅 필요)
+        int b_receiver_m_no= MemberService.getMemberByName(boardDTO.getB_receiver_m_name()).getM_no();
+        String b_writer_m_name=MemberService.getMemberByNo(b_writer_m_no).getM_name();
+        //이름 세팅하기
+        boardDTO.setB_receiver_m_no(b_receiver_m_no);
+        boardDTO.setB_writer_m_name(b_writer_m_name);
+        boardDTO.setB_writer_m_no(b_writer_m_no);
+        int result = boardDao.PostConfirm(boardDTO);
         if (result == 1) { //포스팅 성공시
             return SUCCESS;
         } else {

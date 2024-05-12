@@ -13,10 +13,15 @@ public class MyPageService {
     MyPageDao MyPageDao;
 
     //등록된 선물이 있나 확인
+    public boolean checkSomeonesSpecialGift(int no) {
+        log.info("[MyPageService] checkSomeonesSpecialGift");
+
+        return MyPageDao.checkSomeonesSpecialGift(no);
+    }
     public boolean checkSomeonesSpecialGift(String name) {
         log.info("[MyPageService] checkSomeonesSpecialGift");
 
-        return MyPageDao.checkSomeonesSpecialGift(name);
+        return MyPageDao.checkSomeonesSpecialGift(name+"의 특별 선물");
     }
 
     //특별 선물 등록

@@ -56,7 +56,7 @@ public class MemberService {
         return MemberDao.getMember();
     }
 
-    //멤버 이름 가져오기
+    //멤버 아이디로 이름 가져오기
     public List<String> getMemberId() { //멤버 이름 가져오기
         log.info("[MemberService] getMemberId");
         List<MemberDTO> MemberDTOs=MemberDao.getMember();
@@ -65,6 +65,18 @@ public class MemberService {
             MemberName.add(memberDTO.getM_id());
         }
         return MemberName;
+    }
+    //멤버 이름으로 가져오기
+    public MemberDTO getMemberByName(String m_name) {
+        log.info("[MemberService] getMemberNoByName");
+
+        return MemberDao.getMemberByName(m_name);
+    }
+    //멤버 번호로 가져오기
+    public MemberDTO getMemberByNo(int m_no) {
+        log.info("[MemberService] getMemberNoByNo");
+
+        return MemberDao.getMemberByNo(m_no);
     }
 
     //멤버 수정하기
@@ -92,5 +104,7 @@ public class MemberService {
         }
         return loginedMemberDTO;
     }
+
+
 
 }

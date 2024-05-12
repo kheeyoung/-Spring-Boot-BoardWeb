@@ -19,10 +19,10 @@ public class MyPageDao {
     //자신의 특별 선물 추가하기
     public void saveSpecialGift(SpecialGiftDTO specialGiftDTO) {
         log.info("[MyPageDao] saveSpecialGift");
-        String sql="INSERT INTO kim_tbl_specialGift (sg_name,sg_filePath,sg_ownner,sg_reg_date,sg_mod_date) VALUE (?,?,?,NOW(),NOW())";
+        String sql="INSERT INTO kim_tbl_specialGift (sg_name,sg_filePath,sg_ownner_no,sg_reg_date,sg_mod_date) VALUE (?,?,?,NOW(),NOW())";
 
         try {
-            jdbcTemplate.update(sql,specialGiftDTO.getSg_name(),specialGiftDTO.getSg_filePath(),specialGiftDTO.getSg_ownner());
+            jdbcTemplate.update(sql,specialGiftDTO.getSg_name(),specialGiftDTO.getSg_filePath(),specialGiftDTO.getSg_ownner_no());
         }
         catch (Exception e){
             e.printStackTrace();
@@ -46,10 +46,27 @@ public class MyPageDao {
         return SpecialGiftDTOs;
     }
 
-    //특정 멤버의 특별 선물이 등록 되어 있나 확인
+    //특정 멤버의 특별 선물이 등록 되어 있나 확인 (번호로 확인)
+    public boolean checkSomeonesSpecialGift(int no) {
+        log.info("[MyPageDao] checkSomeonesSpecialGift");
+        String sql="SELECT * FROM kim_tbl_specialGift WHERE sg_name='"+no+"';";
+
+        List<SpecialGiftDTO> SpecialGiftDTOs =new ArrayList<SpecialGiftDTO>();
+
+        try{
+            RowMapper<SpecialGiftDTO> rowMapper= BeanPropertyRowMapper.newInstance(SpecialGiftDTO.class);
+            SpecialGiftDTOs=jdbcTemplate.query(sql,rowMapper);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return SpecialGiftDTOs.size()!=0 ? false:true;
+    }
+
+    //특정 멤버의 특별 선물이 등록 되어 있나 확인 (이름으로 확인)
     public boolean checkSomeonesSpecialGift(String name) {
         log.info("[MyPageDao] checkSomeonesSpecialGift");
-        String sql="SELECT * FROM kim_tbl_specialGift WHERE sg_ownner='"+name+"';";
+        String sql="SELECT * FROM kim_tbl_specialGift WHERE sg_name ='"+name+"';";
 
         List<SpecialGiftDTO> SpecialGiftDTOs =new ArrayList<SpecialGiftDTO>();
 
@@ -78,10 +95,10 @@ public class MyPageDao {
 
     public void editSpecialGift(SpecialGiftDTO specialGiftDTO) {
         log.info("[MyPageDao] editSpecialGift");
-        String sql="UPDATE kim_tbl_specialGift SET sg_filePath=?, sg_mod_date=NOW() WHERE sg_ownner=?;";
+        String sql="UPDATE kim_tbl_specialGift SET sg_filePath=?, sg_mod_date=NOW() WHERE sg_ownner_no=?;";
 
         try {
-            jdbcTemplate.update(sql,specialGiftDTO.getSg_filePath(),specialGiftDTO.getSg_ownner());
+            jdbcTemplate.update(sql,specialGiftDTO.getSg_filePath(),specialGiftDTO.getSg_ownner_no());
         }
         catch (Exception e){
             e.printStackTrace();

@@ -37,6 +37,7 @@ public class GiftController {
         MemberDTO loginedMemberDTO=(MemberDTO) session.getAttribute("loginedMemberDTO"); //세션으로부터 로그인 정보 받아오기
         List<GiftDTO> GiftDTOs=GiftService.getGift(); //전체 선물 목록 받아오기
         List<LikePointDTO> LikePointDTOs=ItemService.getLikePoint(loginedMemberDTO.getM_no()); //호감도 받아오기
+
         MemberDTO newloginedMemberDTO=MemberService.loginConfirm(loginedMemberDTO.getM_no()); //서비스로부터(DB) 로그인 정보를 받아온다.
         session.setAttribute("loginedMemberDTO",newloginedMemberDTO);//코인 갱신
         session.setMaxInactiveInterval(60*30);
@@ -88,10 +89,14 @@ public class GiftController {
 
     //선물 추가
     @PostMapping("/gift/AddGift")
-    public String giftAdd(GiftDTO giftDTO,Model model){
+    public String giftAdd(GiftDTO giftDTO,@RequestParam(value="g_giftOwnerName") String g_giftOwnerName,Model model){
         log.info("[GiftController] AddGift");
         String nextPage = "redirect:/manager";
+        int GiftOwnerNo=MemberService.getMemberByName(g_giftOwnerName).getM_no();
+        giftDTO.setG_giftOwner_no(GiftOwnerNo);
         int AddGift= GiftService.AddGift(giftDTO);
+
+
         if(AddGift==-1){ //선물 추가 실패했을 경우
             model.addAttribute("result","실패");
             model.addAttribute("reason","선물 추가 실패");
@@ -133,9 +138,6 @@ public class GiftController {
                     model.addAttribute("reason","선물 획득");
                     ItemService.addSpecialItem(LikePointDTO.getName(),loginedMemberDTO.getM_no()); //특별 선물 받기
                 }
-
-
-
             }
             else{
                 model.addAttribute("result","실패");

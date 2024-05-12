@@ -78,9 +78,9 @@ public class MyPageController {
         SpecialGiftDTO specialGiftDTO = new SpecialGiftDTO(); //DB에 저장 할 특별 선물 DTO
         specialGiftDTO.setSg_name(loginedMemberDTO.getM_name() + "의 특별 선물");
         specialGiftDTO.setSg_filePath("SpecialGiftImage\\" + fileName);
-        specialGiftDTO.setSg_ownner(loginedMemberDTO.getM_name());
+        specialGiftDTO.setSg_ownner_no(loginedMemberDTO.getM_no());
 
-        if(MyPageService.checkSomeonesSpecialGift(loginedMemberDTO.getM_name())){ //만약 이전에 저장된 특별 선물이 없을 경우
+        if(MyPageService.checkSomeonesSpecialGift(loginedMemberDTO.getM_no())){ //만약 이전에 저장된 특별 선물이 없을 경우
             MyPageService.saveSpecialGift(specialGiftDTO); //새로 특별 선물 저장
         }
         else{//이전에 저장된 특별 선물이 있으면

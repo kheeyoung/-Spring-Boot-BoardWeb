@@ -1,25 +1,42 @@
 {{>layouts/header}}
 <!--내용-->
 <!-- 리스트 게시판 시작-->
-<script>
-
-</script>
-<h1>글 쓰기</h1>
-<form class="container" action="/board/toPost_Confirm" method="post">
-    제목:     <input type="text" name="b_name"><br>
-    받는 사람: <select name="b_receiver">
-                {{#MemberDTOs}}
-                    <option>{{m_id}}</option>
-                {{/MemberDTOs}}
-            </select><br>
-    보낼 선물: <select name="b_gift">
-                {{#ItemDTOs}}
-                     <option>{{i_name}}</option>
-                {{/ItemDTOs}}
-            </select><br>
-    내용:     <input type="text" name="b_context"><br>
-    <button type="submit"> 글 쓰기 </button>
-    <input type="reset"	value="reset">
-</form>
+<div class="container">
+    <h1>글 쓰기</h1>
+    <form class="container" action="/board/toPost_Confirm" method="post">
+        <table class="table">
+            <tr>
+                <th scope="col">제목</th>
+                <td><input type="text" name="b_name"></td>
+            </tr>
+            <tr>
+                <th scope="col">받는 사람</th>
+                <td>
+                    <select name="b_receiver_m_name">
+                    {{#MemberDTOs}}
+                        <option>{{m_name}}</option>
+                    {{/MemberDTOs}}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th scope="col">보낼 선물</th>
+                <td>
+                    <select name="b_gift">
+                        {{#ItemDTOs}}
+                            <option>{{i_name}}</option>
+                        {{/ItemDTOs}}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th scope="col">내용</th>
+                <td><input type="text" name="b_context"><br></td>
+            </tr>
+        </table>
+        <button type="submit" class="btn btn-dark"> 글 쓰기 </button>
+        <input type="reset"	value="reset" class="btn btn-dark">
+    </form>
+</div>
 
 {{>layouts/footer}}

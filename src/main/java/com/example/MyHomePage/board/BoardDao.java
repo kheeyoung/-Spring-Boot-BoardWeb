@@ -15,13 +15,21 @@ public class BoardDao {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public int PostConfirm(BoardDTO boardDTO, String username) {
+    public int PostConfirm(BoardDTO boardDTO) {
         log.info("[BoardDao] PostConfirm");
-        String sql="INSERT INTO kim_tbl_boardpost (b_name,m_name,b_gift,b_receiver,b_viewnum,b_context,b_reg_date,b_mod_date) VALUE (?,?,?,?,?,?,NOW(),NOW())";
+        String sql="INSERT INTO kim_tbl_boardpost " +
+                "(b_name,b_writer_m_no,b_gift,b_receiver_m_no,b_viewnum,b_context,b_reg_date,b_mod_date,b_writer_m_name,b_receiver_m_name) " +
+                "VALUE (?,?,?,?,0,?,NOW(),NOW(),?,?)";
 
         int result=-1;
         try {
-            result=jdbcTemplate.update(sql,boardDTO.getB_name(),username,boardDTO.getB_gift(),boardDTO.getB_receiver(),0,boardDTO.getB_context());
+            result=jdbcTemplate.update(sql,boardDTO.getB_name(),
+                                                boardDTO.getB_writer_m_no(),
+                                                boardDTO.getB_gift(),
+                                                boardDTO.getB_receiver_m_no(),
+                                                boardDTO.getB_context(),
+                                                boardDTO.getB_writer_m_name(),
+                                                boardDTO.getB_receiver_m_name());
         }
         catch (Exception e){
             e.printStackTrace();

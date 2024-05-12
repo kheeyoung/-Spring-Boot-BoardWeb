@@ -142,4 +142,32 @@ public class MemberDao {
         }
         return !memberDTOs.isEmpty() ? memberDTOs.get(0):null;
     }
+
+    public MemberDTO getMemberByName(String m_name) {
+        String sql="SELECT * FROM kim_tbl_member WHERE m_name="+m_name;
+        List<MemberDTO> memberDTOs =new ArrayList<MemberDTO>();
+
+        try{
+            RowMapper<MemberDTO> rowMapper= BeanPropertyRowMapper.newInstance(MemberDTO.class);
+            memberDTOs=jdbcTemplate.query(sql,rowMapper);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return !memberDTOs.isEmpty() ? memberDTOs.get(0):null;
+    }
+
+    public MemberDTO getMemberByNo(int m_no) {
+        String sql="SELECT * FROM kim_tbl_member WHERE m_no="+m_no;
+        List<MemberDTO> memberDTOs =new ArrayList<MemberDTO>();
+
+        try{
+            RowMapper<MemberDTO> rowMapper= BeanPropertyRowMapper.newInstance(MemberDTO.class);
+            memberDTOs=jdbcTemplate.query(sql,rowMapper);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return !memberDTOs.isEmpty() ? memberDTOs.get(0):null;
+    }
 }

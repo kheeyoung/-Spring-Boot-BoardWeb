@@ -49,15 +49,17 @@ public class ItemService {
     }
 
     //특정 멤버가 아이템 사용하기
-    public void useItem(int useItemNo,String b_receiver, int likePoint) {
+    public void useItem(int useItemNo,String b_receiver_m_name, int likePoint) {
         log.info("[ItemService] useItem");
-        ItemDao.useItem(useItemNo,b_receiver,likePoint);
+        //받는 사람 이름으로 번호 가져오기
+        int b_receiver_m_no=MemberService.getMemberByName(b_receiver_m_name).getM_no();
+        ItemDao.useItem(useItemNo,b_receiver_m_no,likePoint);
     }
 
     //특정 멤버의 호감도 계산하기
     public List<LikePointDTO> getLikePoint(int m_no) {
         log.info("[ItemService] getLikePoint");
-        List<LikePointDTO> LikePointDTOs=ItemDao.getMyLikePoint(m_no);                //호감도 받아오기
+        List<LikePointDTO> LikePointDTOs=ItemDao.getMyLikePoint(m_no);  //호감도 받아오기
 
         return LikePointDTOs;
     }
@@ -85,4 +87,5 @@ public class ItemService {
         log.info("[ItemService] getMySpecialItem");
         return ItemDao.getMySpecialItem(m_no);
     }
+
 }

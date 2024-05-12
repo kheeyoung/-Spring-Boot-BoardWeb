@@ -1,44 +1,92 @@
 {{>layouts/header}}
-<h1>선물 목록</h1>
-{{#GiftDTOs}}
-    {{g_name}}<br>
-{{/GiftDTOs}}
-
-<br><br><br>
-
-<h1>선물 뽑기</h1>
-<h2> 1회=1코인</h2>
-<h3>보유 코인 : {{Coin}}</h3>
-<form class="container" action="/gift/giftToGet" method="post">
-    <button type="submit"> 선물 뽑기 </button>
-</form>
 
 
 
+<div class="container">
+    <div class="accordion" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panels-giftList" aria-expanded="false" aria-controls="panels-giftList">
+                    선물 목록
+                </button>
+            </h2>
+            <div id="panels-giftList" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                    <table class="table">
+                        <tr>
+                            <th scope="col">선물 명</th>
+                        </tr>
+                        <tbody>
+                        {{#GiftDTOs}}
+                            <tr>
+                                <td>{{g_name}}</td>
+                            </tr>
+                        {{/GiftDTOs}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panels-getGift" aria-expanded="false" aria-controls="panels-getGift">
+                    선물 뽑기
+                </button>
+            </h2>
+            <div id="panels-getGift" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                    <h1>선물 뽑기</h1>
+                    <h2> 1회=1코인</h2>
+                    <h3>보유 코인 : {{Coin}}</h3>
+                    <form class="container" action="/gift/giftToGet" method="post">
+                        <button type="submit" class="btn btn-dark"> 선물 뽑기 </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panels-MyLikePoint" aria-expanded="false" aria-controls="panels-MyLikePoint">
+                    호감도 현황
+                </button>
+            </h2>
+            <div id="panels-MyLikePoint" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                    <table class="table">
+                        <tr>
+                            <th scope="col">이름</th>
+                            <th scope="col">호감도</th>
+                            <th scope="col"></th>
 
-<br><br><br>
-<h1>호감도 목록</h1>
+                            <th scope="col"></th>
+                        </tr>
+                        <tbody>
+                        {{#LikePointDTOs}}
+                            <tr align="center" style="cursor:pointer;">
+                                <form class="container" action="/gift/specialGiftToGet" method="post">
+                                    <td>{{name}}<input type="hidden"  name="name"     value={{name}}></td>
+                                    <td>{{point}}<input type="hidden"  name="point"     value={{point}}></td>
+                                    <td><button type="submit" class="btn btn-dark"> 특전 받기 </button></td>
+                                </form>
+                            </tr>
+                        {{/LikePointDTOs}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<table>
 
-    <tr>
-        <th scope="col">이름</th>
-        <th scope="col">호감도</th>
-        <th scope="col"></th>
 
-        <th scope="col"></th>
-    </tr>
-    <tbody>
-    {{#LikePointDTOs}}
-        <tr align="center" style="cursor:pointer;">
-            <form class="container" action="/gift/specialGiftToGet" method="post">
-                <td>{{name}}<input type="hidden"  name="name"     value={{name}}></td>
-                <td>{{point}}<input type="hidden"  name="point"     value={{point}}></td>
-                <td><button type="submit"> 특전 받기 </button></td>
-            </form>
-        </tr>
-        {{/LikePointDTOs}}
-    </tbody>
-</table>
+
+
+
+
+
+
+
+
 
 {{>layouts/footer}}

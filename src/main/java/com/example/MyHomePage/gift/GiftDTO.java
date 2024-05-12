@@ -9,7 +9,7 @@ public class GiftDTO {
     int g_no;
     String g_name;
     String g_about;
-    String g_giftOwner;
+    int g_giftOwner_no;
     String g_reg_date;
     String g_mod_date;
 
